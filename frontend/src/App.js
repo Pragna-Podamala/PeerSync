@@ -47,7 +47,7 @@ function AppRoutes() {
 
 export default function App() {
   return (
-    <ThemeProvider username={JSON.parse(localStorage.getItem("user"))?.username}>
+    <ThemeProvider>
       <AuthProvider>
         <BrowserRouter>
           <AppRoutes />
