@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://192.168.0.8:5782/api" });
+const API = axios.create({ baseURL: "https://peersync-x3m0.onrender.com/api" });
 
 API.interceptors.request.use((req) => {
   const token = localStorage.getItem("token");

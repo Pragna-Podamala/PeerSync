@@ -27,7 +27,7 @@ export default function Register() {
     if (!agreed) { setError("Please read and accept the terms first"); return; }
     setLoading(true); setError("");
     try {
-      const res = await fetch("http://192.168.0.8:5782/api/auth/register", {
+      const res = await fetch("https://peersync-x3m0.onrender.com/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, email, password })
