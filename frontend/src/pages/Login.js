@@ -26,7 +26,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true); setError("");
     try {
-      const res = await fetch("https://peersync-x3m0.onrender.com/api/auth/login", {
+      const res = await fetch("https://peersync-api.onrender.com/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
