@@ -1,0 +1,19 @@
+const express = require("express");
+const router = express.Router();
+const auth = require("../middleware/auth");
+const {
+  getMessages, canMessage, editMessage, deleteMessage,
+  reactToMessage, pinMessage, scheduleMessage, getScheduled, deleteScheduled
+} = require("../controllers/messageController");
+
+router.get("/scheduled",          auth, getScheduled);
+router.get("/:username",          auth, getMessages);
+router.get("/:username/can",      auth, canMessage);
+router.put("/:id/edit",           auth, editMessage);
+router.put("/:id/delete",         auth, deleteMessage);
+router.put("/:id/react",          auth, reactToMessage);
+router.put("/:id/pin",            auth, pinMessage);
+router.post("/schedule",          auth, scheduleMessage);
+router.delete("/scheduled/:id",   auth, deleteScheduled);
+
+module.exports = router;

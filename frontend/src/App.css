@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── DARK MODE (default for app) ── */
+:root {
+  --bg:        #0a0a0f;
+  --bg2:       #0f0f16;
+  --bg3:       #18181f;
+  --border:    #1e1e2a;
+  --border2:   #2a2a35;
+  --accent:    #8b5cf6;
+  --accent2:   #6d28d9;
+  --teal:      #10b981;
+  --text:      #f1f1f1;
+  --text2:     #9ca3af;
+  --text3:     #4b5563;
+  --danger:    #ef4444;
+  --font:      'Sora', sans-serif;
+  --shadow:    0 8px 32px rgba(0,0,0,0.4);
+}
+
+/* ── LIGHT MODE ── */
+[data-theme="light"] {
+  --bg:        #f8f7ff;
+  --bg2:       #ffffff;
+  --bg3:       #f3f4f6;
+  --border:    #e5e7eb;
+  --border2:   #d1d5db;
+  --accent:    #8b5cf6;
+  --accent2:   #6d28d9;
+  --teal:      #10b981;
+  --text:      #111827;
+  --text2:     #6b7280;
+  --text3:     #9ca3af;
+  --danger:    #ef4444;
+  --shadow:    0 8px 32px rgba(139,92,246,0.1);
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.3s, color 0.3s;
+}
+
+input, textarea, button { font-family: var(--font); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }

@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+.terms-page {
+  min-height: 100vh;
+  background: #0a1a0f;
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px 20px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.terms-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 48px 44px;
+  max-width: 680px; width: 100%;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.terms-back {
+  background: #f0fdf4; border: 1px solid #d1fae5;
+  color: #059669; font-size: 14px; font-weight: 600;
+  padding: 8px 16px; border-radius: 20px; cursor: pointer;
+  margin-bottom: 28px; display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.15s; font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.terms-back:hover { background: #dcfce7; transform: translateX(-2px); }
+
+.terms-logo {
+  font-size: 48px; margin-bottom: 12px; display: block;
+}
+
+.terms-title {
+  font-size: 32px; font-weight: 900; color: #064e3b;
+  letter-spacing: -0.5px; margin-bottom: 6px;
+}
+
+.terms-date {
+  font-size: 13px; color: #9ca3af; margin-bottom: 36px;
+  font-weight: 500;
+}
+
+.terms-section {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #f0fdf4;
+}
+.terms-section:last-of-type { border-bottom: none; }
+
+.terms-section h2 {
+  font-size: 16px; font-weight: 800; color: #065f46;
+  margin-bottom: 10px; display: flex; align-items: center; gap: 8px;
+}
+
+.terms-section p {
+  font-size: 14px; color: #4b5563; line-height: 1.8; font-weight: 400;
+}
+
+/* Scrollable area */
+.terms-body {
+  max-height: 60vh; overflow-y: auto;
+  padding-right: 8px; margin-bottom: 28px;
+}
+.terms-body::-webkit-scrollbar { width: 4px; }
+.terms-body::-webkit-scrollbar-thumb { background: #d1fae5; border-radius: 4px; }
+
+.terms-scroll-hint {
+  text-align: center; font-size: 12px; color: #9ca3af;
+  margin-bottom: 16px; font-style: italic;
+}
+
+.terms-accept {
+  width: 100%; padding: 15px;
+  background: linear-gradient(135deg, #10b981, #059669);
+  border: none; border-radius: 14px; color: #fff;
+  font-size: 16px; font-weight: 800; cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all 0.2s;
+  box-shadow: 0 6px 20px rgba(16,185,129,0.3);
+}
+.terms-accept:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(16,185,129,0.4); }
+
+@media (max-width: 600px) {
+  .terms-card { padding: 32px 24px; }
+  .terms-title { font-size: 26px; }
+}

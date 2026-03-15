@@ -1,0 +1,30 @@
+const express = require("express");
+const router = express.Router();
+const auth = require("../middleware/auth");
+const c = require("../controllers/userController");
+
+router.get("/",                          auth, c.getAllUsers);
+router.get("/me/starred",                auth, c.getStarredMessages);
+router.get("/me/sessions",               auth, c.getSessions);
+router.get("/me/profile-views",          auth, c.getProfileViews);
+router.get("/:username",                 auth, c.getUser);
+router.put("/me/profile",                auth, c.updateProfile);
+router.put("/me/settings",               auth, c.updateSettings);
+router.post("/me/pic",                   auth, c.uploadProfilePicMiddleware.single("profilePic"), c.uploadProfilePic);
+router.post("/me/media",                 auth, c.uploadMediaMiddleware.single("media"), c.uploadMedia);
+router.post("/me/wallpaper",             auth, c.uploadWallpaperMiddleware.single("wallpaper"), c.setChatWallpaper);
+router.delete("/me/wallpaper/:chatUsername", auth, c.removeChatWallpaper);
+router.post("/me/star/:id",              auth, c.starMessage);
+router.post("/me/pin-chat",              auth, c.pinChat);
+router.post("/me/change-password",       auth, c.changePassword);
+router.post("/me/delete-account",        auth, c.deleteAccount);
+router.post("/me/request-verification",  auth, c.requestVerification);
+router.delete("/me/sessions/:sessionId", auth, c.revokeSession);
+router.post("/:username/follow",         auth, c.followUser);
+router.post("/:username/unfollow",       auth, c.unfollowUser);
+router.post("/:username/accept",         auth, c.acceptRequest);
+router.post("/:username/decline",        auth, c.declineRequest);
+router.post("/:username/block",          auth, c.blockUser);
+router.post("/:username/unblock",        auth, c.unblockUser);
+
+module.exports = router;

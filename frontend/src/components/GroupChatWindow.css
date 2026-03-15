@@ -1,0 +1,27 @@
+/* Reuses ChatWindow.css base — add these group-specific styles */
+
+.group-sender-name {
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  margin-bottom: 3px; display: flex; align-items: center; gap: 6px;
+}
+
+.admin-badge {
+  background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3);
+  color: var(--accent); font-size: 9px; font-weight: 700;
+  padding: 1px 6px; border-radius: 6px; letter-spacing: 0.5px;
+}
+
+.read-count {
+  font-size: 10px; color: var(--teal); font-weight: 600;
+}
+
+.one-time-badge {
+  font-size: 11px; color: var(--text3); font-style: italic; margin-bottom: 3px;
+}
+
+.one-time-locked {
+  cursor: pointer; border: 1.5px dashed var(--border2) !important;
+  background: var(--bg3) !important; color: var(--text2) !important;
+  font-style: italic;
+}
+.one-time-locked:hover { border-color: var(--accent) !important; color: var(--accent) !important; }
