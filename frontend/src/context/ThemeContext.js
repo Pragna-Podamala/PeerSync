@@ -1,12 +1,11 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import API from "../services/api";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const getKey = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    return user?.username ? `theme_${user.username}` : "theme_default";
-  };
+  const getUsername = () => JSON.parse(localStorage.getItem("user"))?.username;
+  const getKey = () => `theme_${getUsername() || "default"}`;
 
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem(getKey()) || "light";
@@ -17,17 +16,23 @@ export function ThemeProvider({ children }) {
     localStorage.setItem(getKey(), theme);
   }, [theme]);
 
-  // Listen for storage changes (when user logs in/out)
-  useEffect(() => {
-    const handleStorage = () => {
-      const saved = localStorage.getItem(getKey()) || "light";
-      setTheme(saved);
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  const toggleTheme = async () => {
+    const newTheme = theme === "dark" ? "light" : "dark";
+    setTheme(newTheme);
+    // Save to backend so it persists across devices
+    try {
+      await API.put("/users/me/profile", { theme: newTheme });
+    } catch {}
+  };
 
-  const toggleTheme = () => setTheme(t => t === "dark" ? "light" : "dark");
+  // Load theme from backend on login
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user?.settings?.theme) {
+      setTheme(user.settings.theme);
+      localStorage.setItem(getKey(), user.settings.theme);
+    }
+  }, [localStorage.getItem("user")]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
