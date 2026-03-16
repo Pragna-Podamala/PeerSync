@@ -317,9 +317,15 @@ exports.acceptRequest = async (req, res) => {
     const requester = await User.findOne({ username: req.params.username });
     if (!requester) return res.status(404).json({ message: "User not found" });
     me.followRequests = me.followRequests.filter(id => id.toString() !== requester._id.toString());
-    me.followers.push(requester._id);
+    // Only add if not already a follower
+    if (!me.followers.map(id => id.toString()).includes(requester._id.toString())) {
+      me.followers.push(requester._id);
+    }
     requester.sentRequests = requester.sentRequests.filter(id => id.toString() !== me._id.toString());
-    requester.following.push(me._id);
+    // Only add if not already following
+    if (!requester.following.map(id => id.toString()).includes(me._id.toString())) {
+      requester.following.push(me._id);
+    }
     await me.save(); await requester.save();
     res.json({ message: "Request accepted" });
   } catch (err) { res.status(500).json({ message: err.message }); }
@@ -360,5 +366,16 @@ exports.unblockUser = async (req, res) => {
     me.blockedUsers = me.blockedUsers.filter(id => id.toString() !== target._id.toString());
     await me.save();
     res.json({ message: "Unblocked" });
+  } catch (err) { res.status(500).json({ message: err.message }); }
+};
+exports.removeFollower = async (req, res) => {
+  try {
+    const me = await User.findById(req.user.id);
+    const target = await User.findOne({ username: req.params.username });
+    if (!target) return res.status(404).json({ message: "User not found" });
+    me.followers = me.followers.filter(id => id.toString() !== target._id.toString());
+    target.following = target.following.filter(id => id.toString() !== me._id.toString());
+    await me.save(); await target.save();
+    res.json({ message: "Follower removed" });
   } catch (err) { res.status(500).json({ message: err.message }); }
 };

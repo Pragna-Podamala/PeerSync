@@ -155,13 +155,26 @@ export default function Sidebar({
           <span className="brand-dot" />
           <h1 className="brand-name">PeerSync</h1>
         </div>
-        <button className="my-avatar-btn" onClick={onOpenProfile}>
+        <button className="my-avatar-btn" onClick={onOpenProfile} style={{position:"relative"}}>
           <div className="my-avatar">
             {currentUser.profilePic
               ? <img src={currentUser.profilePic} alt="" />
               : (currentUser?.username?.[0] || "?").toUpperCase()
             }
           </div>
+          {currentUser?.pendingRequestsCount > 0 && (
+            <span style={{
+              position:"absolute", top:"-4px", right:"-4px",
+              background:"#e05555", color:"#fff",
+              fontSize:"10px", fontWeight:"700",
+              minWidth:"18px", height:"18px",
+              borderRadius:"9px", display:"flex",
+              alignItems:"center", justifyContent:"center",
+              padding:"0 4px", border:"2px solid var(--bg)"
+            }}>
+              {currentUser.pendingRequestsCount > 9 ? "9+" : currentUser.pendingRequestsCount}
+            </span>
+          )}
         </button>
       </div>
 

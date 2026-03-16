@@ -8,6 +8,7 @@ const {
   uploadProfilePic,
   followUser,
   unfollowUser,
+  removeFollower,
   blockUser,
   unblockUser,
   upload
@@ -19,6 +20,7 @@ router.put("/me/profile", auth, updateProfile);
 router.post("/me/pic", auth, upload.single("profilePic"), uploadProfilePic);
 router.post("/:username/follow", auth, followUser);
 router.post("/:username/unfollow", auth, unfollowUser);
+router.post("/:username/remove-follower", auth, removeFollower);
 router.post("/:username/block", auth, blockUser);
 router.post("/:username/unblock", auth, unblockUser);
 

@@ -19,6 +19,27 @@ import "./Chat.css";
 export default function Chat() {
   const { user, logout, updateUser } = useAuth();
   const [friends, setFriends] = useState([]);
+
+  // Listen for openChat event from ProfileModal
+  useEffect(() => {
+    const handler = (e) => {
+      const username = e.detail;
+      // Try friends list first
+      const friend = friends.find(f => f.username === username);
+      if (friend) {
+        setSelectedFriend(friend);
+        setSelectedGroup(null);
+      } else {
+        // Friend not in list yet, fetch their info and open chat
+        API.get(`/users/${username}`).then(res => {
+          setSelectedFriend(res.data);
+          setSelectedGroup(null);
+        }).catch(() => {});
+      }
+    };
+    window.addEventListener("openChat", handler);
+    return () => window.removeEventListener("openChat", handler);
+  }, [friends]);
   const [selectedFriend, setSelectedFriend] = useState(null);
   const [viewProfileUsername, setViewProfileUsername] = useState(null);
   const [allMessages, setAllMessages] = useState({});
@@ -148,6 +169,20 @@ export default function Chat() {
       ].forEach(e => socket.off(e));
       socket.disconnect();
     };
+  }, []);
+
+  // Fetch pending requests count for badge
+  useEffect(() => {
+    const fetchRequestCount = async () => {
+      try {
+        const res = await API.get(`/users/${user.username}`);
+        const count = res.data.followRequests?.length || 0;
+        updateUser({ ...user, pendingRequestsCount: count });
+      } catch {}
+    };
+    fetchRequestCount();
+    const interval = setInterval(fetchRequestCount, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -335,6 +370,7 @@ export default function Chat() {
         selectedFriend={selectedFriend} onSelectFriend={handleSelectFriend}
         onlineUsers={onlineUsers} onLogout={logout}
         onOpenProfile={() => { setShowMyProfile(true); setSidebarOpen(false); }}
+        currentUser={{...user, pendingRequestsCount: user?.pendingRequestsCount || 0}}
         allMessages={allMessages} typingUser={typingUser}
         groups={groups} selectedGroup={selectedGroup}
         onSelectGroup={handleSelectGroup}
@@ -343,7 +379,7 @@ export default function Chat() {
       />
 
       <div className="chat-main">
-        <StatusBar currentUser={user} onViewProfile={handleViewProfileFromStatus} />
+        {!(selectedFriend || selectedGroup) && <StatusBar currentUser={user} onViewProfile={handleViewProfileFromStatus} />}
 
         {(selectedFriend || selectedGroup) ? (
           <>

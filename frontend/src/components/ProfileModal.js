@@ -32,6 +32,7 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
   const [deletePwd, setDeletePwd] = useState("");
   const [secMsg, setSecMsg] = useState({ text: "", type: "" });
   const [notifSaved, setNotifSaved] = useState(false);
+  const [mobileView, setMobileView] = useState("sidebar"); // "sidebar" or "content" 
 
   const fileRef = useRef();
   const { theme, toggleTheme } = useTheme();
@@ -100,13 +101,24 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
   };
 
   const handleAccept = async (username) => {
-    try { await API.post(`/users/${username}/accept`); fetchData(); } catch {}
+    setRequests(r => r.filter(u => u.username !== username));
+    try { await API.post(`/users/${username}/accept`); fetchData(); } catch (err) {
+      fetchData();
+    }
   };
   const handleDecline = async (username) => {
     try { await API.post(`/users/${username}/decline`); setRequests(r => r.filter(u => u.username !== username)); } catch {}
   };
   const handleUnblock = async (username) => {
     try { await API.post(`/users/${username}/unblock`); setBlocked(b => b.filter(u => (u.username || u) !== username)); } catch {}
+  };
+  const handleUnfollow = async (username) => {
+    setFollowing(f => f.filter(u => u.username !== username));
+    try { await API.post(`/users/${username}/unfollow`); } catch {}
+  };
+  const handleRemoveFollower = async (username) => {
+    setFollowers(f => f.filter(u => u.username !== username));
+    try { await API.post(`/users/${username}/remove-follower`); } catch {}
   };
 
   const handleChangePwd = async () => {
@@ -146,7 +158,7 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
         <button className="pm-close" onClick={onClose}>✕</button>
 
         {/* Left sidebar */}
-        <div className="pm-sidebar">
+        <div className={`pm-sidebar${mobileView === "content" ? " pm-hide-mobile" : ""}`}>
           <div className="pm-profile-header">
             <div className="pm-avatar-wrap" onClick={() => fileRef.current.click()}>
               {profilePic
@@ -178,7 +190,7 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
               ) : (
                 <button key={item.id}
                   className={`pm-nav-item ${tab === item.id ? "active" : ""}`}
-                  onClick={() => { setTab(item.id); if (item.id === "security") fetchSessions(); }}>
+                  onClick={() => { setTab(item.id); if (item.id === "security") fetchSessions(); setMobileView("content"); }}>
                   <span className="pm-nav-icon">{item.icon}</span>
                   <span className="pm-nav-label">{item.label}</span>
                   {item.badge > 0 && <span className="pm-nav-badge">{item.badge}</span>}
@@ -189,7 +201,15 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
         </div>
 
         {/* Right content */}
-        <div className="pm-content">
+        <div className={`pm-content${mobileView === "sidebar" ? " pm-hide-mobile" : ""}`}>
+          <button className="pm-back-btn" onClick={() => setMobileView("sidebar")}>← Back</button>
+          {/* Mobile back button */}
+          <button className="pm-mobile-back" onClick={() => setTab("profile")} style={{
+            display:"none", alignItems:"center", gap:"6px",
+            background:"none", border:"none", color:"var(--accent)",
+            fontSize:"13px", fontWeight:"600", cursor:"pointer",
+            marginBottom:"12px", padding:"0"
+          }}>← Back</button>
 
           {/* Profile */}
           {tab === "profile" && <>
@@ -235,7 +255,8 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
                 : followers.map(u => (
                   <div key={u._id} className="pm-user-row">
                     <div className="pm-user-av">{u.profilePic ? <img src={u.profilePic} alt="" /> : u.username?.[0]?.toUpperCase()}</div>
-                    <span className="pm-user-name">@{u.username}</span>
+                    <span className="pm-user-name" style={{cursor:"pointer"}} onClick={() => { onClose(); window.dispatchEvent(new CustomEvent("openChat", {detail: u.username})); }}>@{u.username}</span>
+                    <button className="pm-unblock-btn" onClick={() => handleRemoveFollower(u.username)}>Remove</button>
                   </div>
                 ))
               }
@@ -253,7 +274,8 @@ export default function ProfileModal({ currentUser, onClose, onProfileUpdate, on
                 : following.map(u => (
                   <div key={u._id} className="pm-user-row">
                     <div className="pm-user-av">{u.profilePic ? <img src={u.profilePic} alt="" /> : u.username?.[0]?.toUpperCase()}</div>
-                    <span className="pm-user-name">@{u.username}</span>
+                    <span className="pm-user-name" style={{cursor:"pointer"}} onClick={() => { onClose(); window.dispatchEvent(new CustomEvent("openChat", {detail: u.username})); }}>@{u.username}</span>
+                    <button className="decline-btn" onClick={() => handleUnfollow(u.username)}>Unfollow</button>
                   </div>
                 ))
               }
