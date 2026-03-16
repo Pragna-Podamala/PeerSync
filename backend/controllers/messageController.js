@@ -153,3 +153,17 @@ exports.deleteScheduled = async (req, res) => {
     res.json({ success: true });
   } catch (err) { res.status(500).json({ message: err.message }); }
 };
+exports.deleteChat = async (req, res) => {
+  try {
+    const me = req.user.id;
+    const other = await require('../models/User').findOne({ username: req.params.username });
+    if (!other) return res.status(404).json({ message: "User not found" });
+    await require('../models/Message').deleteMany({
+      $or: [
+        { sender: me, receiver: other._id },
+        { sender: other._id, receiver: me }
+      ]
+    });
+    res.json({ message: "Chat deleted" });
+  } catch (err) { res.status(500).json({ message: err.message }); }
+};

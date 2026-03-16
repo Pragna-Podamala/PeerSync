@@ -5,7 +5,7 @@ import "./Sidebar.css";
 export default function Sidebar({
   currentUser, friends, selectedFriend, onSelectFriend,
   onlineUsers, onLogout, onOpenProfile, allMessages, typingUser,
-  groups, selectedGroup, onSelectGroup, onCreateGroup, className,
+  groups, selectedGroup, onSelectGroup, onCreateGroup, className, onDeleteChat,
 }) {
   const [tab, setTab] = useState("chats");
   const [search, setSearch] = useState("");
@@ -280,8 +280,11 @@ export default function Sidebar({
             {sidebarCtx.isArchived ? "📂 Unarchive Chat" : "📁 Archive Chat"}
           </button>
           <button className="sidebar-ctx-btn danger" onClick={() => {
+            const friend = sidebarCtx.friend;
             setSidebarCtx(null);
-            if (window.confirm(`Delete chat with @${sidebarCtx.friend.username}?`)) {}
+            if (window.confirm(`Delete chat with @${friend.username}?`)) {
+              onDeleteChat?.(friend.username);
+            }
           }}>
             🗑 Delete Chat
           </button>

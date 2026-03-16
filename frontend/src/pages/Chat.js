@@ -19,6 +19,10 @@ import "./Chat.css";
 export default function Chat() {
   const { user, logout, updateUser } = useAuth();
   const [friends, setFriends] = useState([]);
+  const [deletedChats, setDeletedChats] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(`deletedChats_${JSON.parse(localStorage.getItem('user'))?.username}`) || '[]'); }
+    catch { return []; }
+  });
 
   // Listen for openChat event from ProfileModal
   useEffect(() => {
@@ -207,7 +211,11 @@ export default function Chat() {
   useEffect(() => {
     if (!selectedFriend) return;
     setSelectedGroup(null);
+    const deletedAt = localStorage.getItem(`deletedChatAt_${user.username}_${selectedFriend.username}`);
     API.get(`/messages/${selectedFriend.username}`).then(res => {
+      if (deletedAt) {
+        res.data = res.data.filter(m => new Date(m.createdAt).getTime() > parseInt(deletedAt));
+      }
       setMessages(res.data);
       // Mark ALL as seen locally so badge clears immediately
       const seenMsgs = res.data.map(m =>
@@ -368,6 +376,13 @@ export default function Chat() {
       <Sidebar
         currentUser={user} friends={friends}
         selectedFriend={selectedFriend} onSelectFriend={handleSelectFriend}
+        onDeleteChat={(username) => {
+          // Store deletion time in localStorage
+          const key = `deletedChatAt_${user.username}_${username}`;
+          localStorage.setItem(key, Date.now().toString());
+          setAllMessages(prev => { const n = {...prev}; n[username] = []; return n; });
+          if (selectedFriend?.username === username) setSelectedFriend(null);
+        }}
         onlineUsers={onlineUsers} onLogout={logout}
         onOpenProfile={() => { setShowMyProfile(true); setSidebarOpen(false); }}
         currentUser={{...user, pendingRequestsCount: user?.pendingRequestsCount || 0}}

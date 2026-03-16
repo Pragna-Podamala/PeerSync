@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 const {
-  getMessages, canMessage, editMessage, deleteMessage,
+  getMessages, canMessage, editMessage, deleteMessage, deleteChat,
   reactToMessage, pinMessage, scheduleMessage, getScheduled, deleteScheduled
 } = require("../controllers/messageController");
 
@@ -17,3 +17,4 @@ router.post("/schedule",          auth, scheduleMessage);
 router.delete("/scheduled/:id",   auth, deleteScheduled);
 
 module.exports = router;
+router.delete("/:username", auth, deleteChat);
