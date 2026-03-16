@@ -1,3 +1,343 @@
+/* ══════════════════════════════════
+   STATUSBAR.CSS — Full Rewrite
+   ══════════════════════════════════ */
+
+/* ── Status Bar Row ── */
+.status-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  overflow-x: auto;
+  padding: 12px 16px;
+  gap: 18px;
+  max-height: 110px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  scrollbar-width: none;
+}
+.status-bar::-webkit-scrollbar { display: none; }
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.status-avatar {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 700; color: #fff;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  flex-shrink: 0; position: relative;
+}
+.status-avatar img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  position: absolute; inset: 0;
+}
+.status-avatar.has-status {
+  border: 2.5px solid var(--accent);
+}
+.status-avatar.my-status {
+  border: 2.5px solid var(--accent);
+}
+.status-avatar.add-status {
+  border: 2px dashed var(--border2);
+}
+.status-avatar.manage-status {
+  background: var(--bg3);
+  border: 2px dashed var(--border2);
+  font-size: 22px;
+}
+
+.status-add-overlay {
+  position: absolute;
+  bottom: -2px; right: -2px;
+  width: 22px; height: 22px;
+  background: var(--accent); color: #fff;
+  font-size: 16px; font-weight: 700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg2);
+  cursor: pointer; z-index: 5;
+  transition: transform 0.15s;
+}
+.status-add-overlay:hover { transform: scale(1.15); }
+
+.status-count-badge {
+  position: absolute;
+  top: -3px; left: -3px;
+  width: 20px; height: 20px;
+  background: var(--teal); color: #fff;
+  font-size: 10px; font-weight: 700;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--bg2); z-index: 5;
+}
+
+.status-name {
+  font-size: 11px; color: var(--text3);
+  max-width: 64px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  text-align: center;
+}
+
+/* ── Upload Modal ── */
+.status-upload-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1500;
+}
+.status-upload-modal {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 24px;
+  width: 400px; max-width: 92vw;
+  max-height: 88vh; overflow-y: auto;
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+.upload-title {
+  font-size: 18px; font-weight: 700; color: var(--text); margin: 0;
+}
+.upload-preview {
+  width: 100%; max-height: 280px;
+  object-fit: cover; border-radius: 16px;
+  border: 1px solid var(--border2);
+}
+.caption-input {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 11px 14px;
+  color: var(--text); font-size: 14px; outline: none; width: 100%;
+  transition: border-color 0.15s;
+}
+.caption-input:focus { border-color: var(--accent); }
+.caption-input::placeholder { color: var(--text3); }
+
+/* Privacy options */
+.privacy-section { display: flex; flex-direction: column; gap: 8px; }
+.privacy-label { font-size: 12px; font-weight: 700; color: var(--text3); letter-spacing: 0.5px; }
+.privacy-options { display: flex; flex-direction: column; gap: 6px; }
+.privacy-opt {
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 10px 14px; gap: 2px;
+  background: var(--bg3); border: 1.5px solid var(--border2);
+  border-radius: 12px; cursor: pointer;
+  transition: all 0.15s; width: 100%; text-align: left;
+}
+.privacy-opt:hover { border-color: var(--accent); }
+.privacy-opt.selected { border-color: var(--accent); background: rgba(139,92,246,0.1); }
+.privacy-opt-label { font-size: 13px; font-weight: 600; color: var(--text); }
+.privacy-opt-sub   { font-size: 11px; color: var(--text3); }
+
+/* Close friends picker */
+.cf-picker { display: flex; flex-direction: column; gap: 4px; max-height: 150px; overflow-y: auto; }
+.cf-label  { font-size: 11px; color: var(--text3); font-weight: 600; }
+.cf-empty  { font-size: 12px; color: var(--text3); text-align: center; padding: 8px 0; }
+.cf-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 8px; border-radius: 10px; cursor: pointer;
+}
+.cf-row:hover    { background: var(--bg3); }
+.cf-row.selected { background: rgba(139,92,246,0.08); }
+.cf-avatar {
+  width: 30px; height: 30px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.cf-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.cf-name  { flex: 1; font-size: 13px; font-weight: 500; color: var(--text); }
+.cf-check {
+  width: 18px; height: 18px; border-radius: 6px;
+  border: 2px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+}
+.cf-check.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cf-warn { font-size: 11px; color: var(--danger); text-align: center; }
+
+.pm-save {
+  padding: 13px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  border: none; border-radius: 14px; color: #fff;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  width: 100%; transition: opacity 0.2s; font-family: var(--font);
+}
+.pm-save:hover { opacity: 0.88; }
+.pm-save:disabled { opacity: 0.45; cursor: not-allowed; }
+.pm-close {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--bg3); border: none; color: var(--text2);
+  width: 32px; height: 32px; border-radius: 10px;
+  cursor: pointer; font-size: 13px; z-index: 10;
+  display: flex; align-items: center; justify-content: center;
+}
+.pm-close:hover { background: var(--border2); }
+
+/* ── My Statuses Modal ── */
+.my-status-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0; border-bottom: 1px solid var(--border);
+}
+.my-status-row:last-child { border-bottom: none; }
+
+.my-status-thumb {
+  width: 60px; height: 60px; border-radius: 14px;
+  overflow: hidden; flex-shrink: 0;
+  background: var(--bg3); border: 1px solid var(--border2);
+}
+.my-status-media { width: 100%; height: 100%; object-fit: cover; }
+
+.my-status-info { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.my-status-privacy {
+  font-size: 13px; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 4px;
+}
+.my-status-viewers { font-size: 12px; color: var(--text3); }
+.my-status-caption { font-size: 12px; color: var(--text3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.my-status-actions { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+
+.my-status-privacy-select {
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 10px; color: var(--text); font-size: 12px;
+  padding: 6px 10px; outline: none; cursor: pointer;
+  min-width: 120px;
+}
+.my-status-delete {
+  background: rgba(224,85,85,0.1); border: 1px solid rgba(224,85,85,0.2);
+  border-radius: 8px; color: var(--danger); font-size: 15px;
+  padding: 5px 10px; cursor: pointer; transition: background 0.15s;
+  align-self: flex-end;
+}
+.my-status-delete:hover { background: rgba(224,85,85,0.2); }
+
+/* ── Choice Popup ── */
+.status-choice-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1500;
+}
+.status-choice-modal {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 24px; width: 320px; max-width: 92vw;
+  padding: 28px 24px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+  animation: slideUp 0.25s ease;
+}
+.status-choice-avatar {
+  width: 72px; height: 72px; border-radius: 22px;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700; color: #fff;
+  box-shadow: 0 0 0 3px var(--accent);
+}
+.status-choice-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.status-choice-name { font-size: 17px; font-weight: 700; color: var(--text); margin: 0; }
+.status-choice-sub  { font-size: 13px; color: var(--text3); margin: 0; }
+.status-choice-btns { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 4px; }
+.status-choice-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 16px; border-radius: 16px;
+  border: 1px solid var(--border2); background: var(--bg3);
+  cursor: pointer; transition: all 0.15s; text-align: left; width: 100%;
+}
+.status-choice-btn:hover { background: var(--border); border-color: var(--accent); }
+.choice-icon  { font-size: 26px; }
+.choice-label { font-size: 14px; font-weight: 700; color: var(--text); display: block; }
+.choice-sub   { font-size: 12px; color: var(--text3); display: block; margin-top: 2px; }
+
+/* ── Status Viewer ── */
+.status-viewer {
+  position: fixed; inset: 0;
+  background: #000; z-index: 2000;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.status-progress-bars {
+  position: absolute; top: 12px; left: 12px; right: 12px;
+  display: flex; gap: 4px; z-index: 10;
+}
+.progress-bar {
+  height: 3px; flex: 1;
+  background: rgba(255,255,255,0.3);
+  border-radius: 2px;
+}
+.progress-bar.done   { background: rgba(255,255,255,0.9); }
+.progress-bar.active {
+  position: relative; overflow: hidden;
+  background: rgba(255,255,255,0.3);
+}
+.progress-bar.active::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: #fff;
+  animation: progressAnim 5s linear forwards;
+}
+@keyframes progressAnim {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+.status-viewer-header {
+  position: absolute; top: 28px; left: 0; right: 0;
+  display: flex; align-items: center; gap: 10px;
+  padding: 0 16px; z-index: 10;
+}
+.sv-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  overflow: hidden; border: 2px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--accent), var(--teal));
+  font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.sv-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.sv-info { flex: 1; }
+.sv-name { font-size: 14px; font-weight: 700; color: #fff; display: block; }
+.sv-time { font-size: 11px; color: rgba(255,255,255,0.7); display: block; }
+.sv-close {
+  background: rgba(0,0,0,0.5); border: none; color: #fff;
+  width: 34px; height: 34px; border-radius: 50%;
+  font-size: 14px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.sv-media-wrap {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+.sv-media { max-width: 100%; max-height: 100vh; object-fit: contain; }
+.sv-caption {
+  position: absolute; bottom: 40px; left: 16px; right: 16px;
+  background: rgba(0,0,0,0.6); color: #fff;
+  font-size: 14px; padding: 10px 16px; border-radius: 12px;
+  text-align: center; backdrop-filter: blur(4px);
+}
+.sv-viewers {
+  position: absolute; bottom: 80px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,0,0,0.6); color: #fff;
+  font-size: 13px; padding: 6px 16px; border-radius: 20px;
+  backdrop-filter: blur(4px);
+}
+.sv-nav-left  { position: absolute; left: 0;  top: 0; bottom: 0; width: 35%; z-index: 5; }
+.sv-nav-right { position: absolute; right: 0; top: 0; bottom: 0; width: 35%; z-index: 5; }
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
 /* ── FULL Sidebar.css ── */
 .sidebar {
   width: 280px; flex-shrink: 0;
@@ -183,440 +523,33 @@
   transition: background 0.15s; flex-shrink: 0;
 }
 .logout-btn:hover { background: rgba(224,85,85,0.15); }
-/* Fix status images taking full screen */
-.status-bar {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  overflow-x: auto !important;
-  padding: 10px 16px !important;
-  gap: 16px !important;
-  max-height: 100px !important;
-  flex-shrink: 0 !important;
-  border-bottom: 1px solid var(--border) !important;
-}
 
-.status-avatar {
-  width: 56px !important;
-  height: 56px !important;
-  border-radius: 50% !important;
-  overflow: hidden !important;
-  flex-shrink: 0 !important;
-  object-fit: cover !important;
-}
-
-.status-avatar img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-.status-item {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 4px !important;
-  cursor: pointer !important;
-  flex-shrink: 0 !important;
-  position: relative !important;
-}
-
-.status-name {
-  font-size: 11px !important;
-  color: var(--text3) !important;
-  max-width: 60px !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-
-/* Fix choice popup styling */
-.status-choice-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: rgba(0,0,0,0.6) !important;
-  backdrop-filter: blur(6px) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 1500 !important;
-}
-
-.status-choice-modal {
-  background: var(--bg2) !important;
-  border: 1px solid var(--border2) !important;
-  border-radius: 24px !important;
-  width: 320px !important;
-  max-width: 90vw !important;
-  padding: 28px 24px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  gap: 12px !important;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5) !important;
-}
-
-.status-choice-avatar {
-  width: 70px !important;
-  height: 70px !important;
-  border-radius: 22px !important;
-  overflow: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 26px !important;
-  font-weight: 700 !important;
-  color: #fff !important;
-  box-shadow: 0 0 0 3px var(--accent) !important;
-  background: linear-gradient(135deg, var(--accent), var(--teal)) !important;
-}
-.status-choice-avatar img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-.status-choice-name { font-size: 17px !important; font-weight: 700 !important; color: var(--text) !important; }
-.status-choice-sub  { font-size: 13px !important; color: var(--text3) !important; }
-
-.status-choice-btns {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 10px !important;
-  width: 100% !important;
-}
-
-.status-choice-btn {
-  display: flex !important;
-  align-items: center !important;
-  gap: 14px !important;
-  padding: 14px 16px !important;
-  border-radius: 16px !important;
-  border: 1px solid var(--border2) !important;
-  background: var(--bg3) !important;
-  cursor: pointer !important;
-  text-align: left !important;
-  width: 100% !important;
-  transition: all 0.15s !important;
-}
-.status-choice-btn:hover { border-color: var(--accent) !important; }
-
-.choice-icon  { font-size: 26px !important; }
-.choice-label { font-size: 14px !important; font-weight: 700 !important; color: var(--text) !important; display: block !important; }
-.choice-sub   { font-size: 12px !important; color: var(--text3) !important; display: block !important; }
-
-/* Fix upload modal */
-.status-upload-overlay {
-  position: fixed !important;
-  inset: 0 !important;
-  background: rgba(0,0,0,0.7) !important;
-  backdrop-filter: blur(6px) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  z-index: 1500 !important;
-}
-
-.status-upload-modal {
-  background: var(--bg2) !important;
-  border: 1px solid var(--border2) !important;
-  border-radius: 24px !important;
-  width: 400px !important;
-  max-width: 92vw !important;
-  max-height: 90vh !important;
-  overflow-y: auto !important;
-  padding: 24px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 14px !important;
-  position: relative !important;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5) !important;
-}
-
-.upload-title {
-  font-size: 18px !important;
-  font-weight: 700 !important;
-  color: var(--text) !important;
-  margin: 0 !important;
-}
-
-.upload-preview {
-  width: 100% !important;
-  max-height: 300px !important;
-  object-fit: cover !important;
-  border-radius: 16px !important;
-}
-
-.caption-input {
-  background: var(--bg3) !important;
-  border: 1px solid var(--border2) !important;
-  border-radius: 12px !important;
-  padding: 11px 14px !important;
-  color: var(--text) !important;
-  font-size: 14px !important;
-  outline: none !important;
-  width: 100% !important;
-}
-.caption-input:focus { border-color: var(--accent) !important; }
-
-.pm-save {
-  padding: 13px !important;
-  background: linear-gradient(135deg, var(--accent), var(--accent2)) !important;
-  border: none !important;
-  border-radius: 14px !important;
-  color: #fff !important;
-  font-size: 14px !important;
-  font-weight: 700 !important;
-  cursor: pointer !important;
-  width: 100% !important;
-}
-
-/* Fix privacy options layout */
-.privacy-options {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 8px !important;
-  width: 100% !important;
-}
-
-.privacy-opt {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  padding: 10px 14px !important;
-  background: var(--bg3) !important;
-  border: 1.5px solid var(--border2) !important;
-  border-radius: 12px !important;
-  cursor: pointer !important;
-  width: 100% !important;
-  gap: 2px !important;
-}
-.privacy-opt.selected {
-  border-color: var(--accent) !important;
-  background: rgba(139,92,246,0.12) !important;
-}
-.privacy-opt-label {
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  color: var(--text) !important;
-  display: block !important;
-}
-.privacy-opt-sub {
-  font-size: 11px !important;
-  color: var(--text3) !important;
-  display: block !important;
-}
-
-/* Force dark mode on upload modal */
-.status-upload-modal {
-  background: var(--bg2) !important;
-  color: var(--text) !important;
-}
-
-/* Fix My Statuses modal */
-.my-status-row {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 10px 0 !important;
-  border-bottom: 1px solid var(--border) !important;
-}
-.my-status-thumb {
-  width: 56px !important;
-  height: 56px !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  flex-shrink: 0 !important;
-}
-.my-status-media {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-}
-
-/* Fix status count badge position */
-.status-count-badge {
-  position: absolute !important;
-  top: -4px !important;
-  left: -4px !important;
-  width: 18px !important;
-  height: 18px !important;
-  background: var(--teal) !important;
-  color: #fff !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  border: 2px solid var(--bg2) !important;
-  z-index: 2 !important;
-}
-
-/* Fix other users status avatars showing number */
-.status-avatar.has-status {
-  border: 2.5px solid var(--accent) !important;
-}
-
-/* Fix other user status avatars */
-.status-avatar {
-  width: 56px !important;
-  height: 56px !important;
-  border-radius: 50% !important;
-  overflow: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 20px !important;
-  font-weight: 700 !important;
-  color: #fff !important;
-  background: linear-gradient(135deg, var(--accent), var(--teal)) !important;
-  flex-shrink: 0 !important;
-  position: relative !important;
-}
-
-.status-avatar img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-}
-
-/* Fix status viewer */
-.status-viewer {
-  position: fixed !important;
-  inset: 0 !important;
-  background: #000 !important;
-  z-index: 2000 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  cursor: pointer !important;
-}
-
-.status-progress-bars {
-  position: absolute !important;
-  top: 12px !important;
-  left: 12px !important;
-  right: 12px !important;
-  display: flex !important;
-  gap: 4px !important;
-  z-index: 10 !important;
-}
-
-.progress-bar {
-  height: 3px !important;
-  flex: 1 !important;
-  background: rgba(255,255,255,0.3) !important;
-  border-radius: 2px !important;
-}
-.progress-bar.done   { background: #fff !important; }
-.progress-bar.active {
-  background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,0.3) 100%) !important;
-  animation: progressFill 5s linear forwards !important;
-}
-@keyframes progressFill {
-  from { background-size: 0% 100%; }
-  to   { background-size: 100% 100%; }
-}
-
-.status-viewer-header {
-  position: absolute !important;
-  top: 28px !important;
-  left: 0 !important; right: 0 !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 0 16px !important;
-  z-index: 10 !important;
-}
-
-.sv-avatar {
-  width: 38px !important; height: 38px !important;
-  border-radius: 50% !important; overflow: hidden !important;
-  border: 2px solid #fff !important;
-  display: flex !important; align-items: center !important;
-  justify-content: center !important;
-  background: linear-gradient(135deg, var(--accent), var(--teal)) !important;
-  font-size: 14px !important; font-weight: 700 !important; color: #fff !important;
-  flex-shrink: 0 !important;
-}
-.sv-avatar img { width: 100% !important; height: 100% !important; object-fit: cover !important; }
-
-.sv-info { flex: 1 !important; }
-.sv-name { font-size: 14px !important; font-weight: 700 !important; color: #fff !important; display: block !important; }
-.sv-time { font-size: 11px !important; color: rgba(255,255,255,0.7) !important; display: block !important; }
-
-.sv-close {
-  background: rgba(0,0,0,0.4) !important;
-  border: none !important; color: #fff !important;
-  width: 32px !important; height: 32px !important;
-  border-radius: 50% !important; font-size: 14px !important;
-  cursor: pointer !important; display: flex !important;
-  align-items: center !important; justify-content: center !important;
-}
-
-.sv-media-wrap {
-  width: 100% !important; height: 100% !important;
-  display: flex !important; align-items: center !important; justify-content: center !important;
-}
-.sv-media {
-  max-width: 100% !important;
-  max-height: 100vh !important;
-  object-fit: contain !important;
-}
-
-.sv-caption {
-  position: absolute !important;
-  bottom: 40px !important;
-  left: 16px !important; right: 16px !important;
-  background: rgba(0,0,0,0.6) !important;
-  color: #fff !important; font-size: 14px !important;
-  padding: 10px 16px !important; border-radius: 12px !important;
-  text-align: center !important;
-  backdrop-filter: blur(4px) !important;
-}
-
-.sv-nav-left {
-  position: absolute !important;
-  left: 0 !important; top: 0 !important; bottom: 0 !important;
-  width: 35% !important; z-index: 5 !important;
-}
-.sv-nav-right {
-  position: absolute !important;
-  right: 0 !important; top: 0 !important; bottom: 0 !important;
-  width: 35% !important; z-index: 5 !important;
-}
-/* Fix archived banner */
+/* ── Archive Feature ── */
 .archived-banner {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 11px 16px !important;
-  margin: 0 6px 4px !important;
-  background: var(--bg3) !important;
-  border: 1px solid var(--border2) !important;
-  border-radius: 14px !important;
-  cursor: pointer !important;
-  transition: background 0.15s !important;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 16px; margin: 0 6px 4px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  border-radius: 14px; cursor: pointer;
+  transition: background 0.15s;
 }
-.archived-banner:hover { background: var(--border) !important; }
-.archived-banner-left {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-}
-.archived-icon { font-size: 20px !important; }
-.archived-title { font-size: 14px !important; font-weight: 600 !important; color: var(--text) !important; display: block !important; }
-.archived-sub   { font-size: 12px !important; color: var(--text3) !important; display: block !important; }
+.archived-banner:hover { background: var(--border); }
+.archived-banner-left { display: flex; align-items: center; gap: 12px; }
+.archived-icon { font-size: 22px; }
+.archived-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.archived-sub   { font-size: 12px; color: var(--text3); }
 
-/* PeerSync brand */
-.brand-name {
-  background: linear-gradient(135deg, var(--accent), var(--teal));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.archived-section { display: flex; flex-direction: column; }
+.archived-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 18px; font-size: 13px; font-weight: 600; color: var(--accent);
+  cursor: pointer; background: rgba(139,92,246,0.06);
+  border-bottom: 1px solid var(--border);
+}
+.archived-close {
+  font-size: 12px; color: var(--text3); padding: 2px 6px;
+  border-radius: 6px; background: var(--bg3);
+}
+.archived-divider {
+  text-align: center; font-size: 11px; color: var(--text3);
+  padding: 6px 0; letter-spacing: 1px;
 }
