@@ -2,7 +2,7 @@
 
 PeerSync is a full-stack real-time messaging platform that enables seamless communication between multiple users with modern features and scalable backend architecture.
 
----
+--
 
 ## 🌟 Features
 
