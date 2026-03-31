@@ -12,7 +12,7 @@ PeerSync is a full-stack real-time messaging platform that enables seamless comm
 - ❤️ Reactions and read receipts
 - 📎 Media upload and sharing
 - 🗳️ Polls and interactive messaging
-- ⏳ Disappearing messages
+- ⏳ Disappearing messages and scheduled messages
 - 🛠️ Admin controls and user management
 
 ---
